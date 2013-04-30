@@ -2,6 +2,7 @@ var main = function () {
   "use strict";
   var stack = [],
     unique = [],
+    ids = [],
     i = 0,
     tabCounter = 0,
     compareCounter,
@@ -25,7 +26,9 @@ var main = function () {
       todo.categories.forEach(function (category) {
         stack.push(category);
       });
+      ids.push(todo._id);
     });
+    console.log(ids);
 
     //http://stackoverflow.com/questions/5381621/jquery-function-to-get-all-unique-elements-from-an-array
     unique = stack.filter(function (itm, i, a) {
@@ -37,37 +40,37 @@ var main = function () {
       i += 1;
     });
     todos.forEach(function (todo) {
-      $("#tab1").append("<div class='todo " + tabCounter + "'></div>");
-      $("#tab1 ." + tabCounter + ".todo").append("<h3>" + todo.item + " <button class='destroy " + tabCounter + "'>x</button></h3>" + "<h4>tagged: </h4>");
+      $("#tab1").append("<div class='todo " + ids[tabCounter] + "'></div>");
+      $("#tab1 ." + ids[tabCounter] + ".todo").append("<h3>" + todo.item + " <button class='destroy " + ids[tabCounter] + "'>x</button></h3>" + "<h4>tagged: </h4>");
       todo.categories.forEach(function (category) {
         //for All tab
-        $("#tab1 ." + tabCounter + ".todo").append("<p>" + category + "</p>");
+        $("#tab1 ." + ids[tabCounter] + ".todo").append("<p>" + category + "</p>");
         //for Categories tab
-        $("#tab2 #" + category + " br").before("<div class='" + tabCounter + "'><p>" + todo.item + " <button class='destroy " + tabCounter + "'>x</button></p></div>");
+        $("#tab2 #" + category + " br").before("<div class='" + ids[tabCounter] + "'><p>" + todo.item + " <button class='destroy " + ids[tabCounter] + "'>x</button></p></div>");
       });
       //for All tab
-      $("#tab1 ." + tabCounter + ".todo").append("<br /><hr />");
+      $("#tab1 ." + ids[tabCounter] + ".todo").append("<br /><hr />");
       tabCounter += 1;
     });
   });
 
   //for both tabs
   $("body").on("click", ".destroy", function () {
+    console.log($(this).parent());
     var toNuke = $(this).attr("class").split(" ").slice(-1);
     $("." + toNuke).fadeOut(1000, function () {
       $("." + toNuke).remove();
     });
+    
+    //removes the item from json file
+    /*var nuke_object = 
+    $.post("/todos/delete", nuke_object, function (response) {
+    });*/
   });
+  
+  
 
   //Add tab
-  /*$.post("/people/new", { "name":"Sylvan", "age":20 }, function (response) {
-	console.log(response);
-
-	console.log("getting the json file a second time");
-	$.getJSON("/people.json", function (response) {
-	    console.log(response);
-	});	
-    });*/
   $("#addToDo").val("task goes here");
   $("#addTags").val("tags go here");
 
@@ -87,54 +90,46 @@ var main = function () {
     } else {
       post_object.item = toDoItem;
       post_object.categories = tagArray;
-      console.log(post_object);
       
       $.post("/todos/new", post_object, function (response) {
-        console.log(response);
         $("#addToDo").val("task goes here");
         $("#addTags").val("tags go here");
+        ids.push(response._id);
+        
+        $("#tab1").append("<div class='todo " + ids[tabCounter] + "'></div>");
+        $("#tab1 ." + ids[tabCounter] + ".todo").append("<h3>" + toDoItem + " <button class='destroy " + ids[tabCounter] + "'>x</button></h3>" + "<h4>tagged: </h4>");
+        //for All tab
+        for (tCount = 0; tCount < tagArray.length; tCount += 1) {
+          $("#tab1 ." + ids[tabCounter] + ".todo").append("<p>" + tagArray[tCount] + "</p>");
+        }
+
+        //for Categories tab
+        for (tCount = 0; tCount < tagArray.length; tCount += 1) {
+          for (compareCounter = 0; compareCounter < unique.length; compareCounter += 1) {
+            if (tagArray[tCount] === unique[compareCounter]) {
+              isUnique = false;
+              break;
+            } else if (tagArray[tCount] !== unique[compareCounter]) {
+              isUnique = true;
+            }
+          }
+
+          if (isUnique === true) {
+            unique.push(tagArray[tCount]);
+            $("#tab2").append("<div id ='" + tagArray[tCount].split(" ").join("") + "'><h3>" + tagArray[tCount] + "</h3><br /><hr /></div>");
+          }
+
+          $("#tab2 #" + tagArray[tCount].split(" ").join("") + " br").before("<div class='" + ids[tabCounter] + "'><p>" + toDoItem + " <button class='destroy " + ids[tabCounter] + "'>x</button></p></div>");
+        }
+
+        //for All tab
+        $("#tab1 ." + ids[tabCounter] + ".todo").append("<br /><hr />");
+
+        tabCounter += 1;
       });
     }
-  /*
 
-	    $.post("/people/new", post_object, function (response) {
-		console.log(response);
-		addPersonToList(response);
-		$("#name").val("");
-		$("#age").val("");
-	    });
-	}
-  });*/
-    $("#tab1").append("<div class='todo " + tabCounter + "'></div>");
-     $("#tab1 ." + tabCounter + ".todo").append("<h3>" + toDoItem + " <button class='destroy " + tabCounter + "'>x</button></h3>" + "<h4>tagged: </h4>");
-    //for All tab
-    for (tCount = 0; tCount < tagArray.length; tCount += 1) {
-      $("#tab1 ." + tabCounter + ".todo").append("<p>" + tagArray[tCount] + "</p>");
-    }
-
-    //for Categories tab
-    for (tCount = 0; tCount < tagArray.length; tCount += 1) {
-      for (compareCounter = 0; compareCounter < unique.length; compareCounter += 1) {
-        if (tagArray[tCount] === unique[compareCounter]) {
-          isUnique = false;
-          break;
-        } else if (tagArray[tCount] !== unique[compareCounter]) {
-          isUnique = true;
-        }
-      }
-
-      if (isUnique === true) {
-        unique.push(tagArray[tCount]);
-        $("#tab2").append("<div id ='" + tagArray[tCount].split(" ").join("") + "'><h3>" + tagArray[tCount] + "</h3><br /><hr /></div>");
-      }
-
-      $("#tab2 #" + tagArray[tCount].split(" ").join("") + " br").before("<div class='" + tabCounter + "'><p>" + toDoItem + " <button class='destroy " + tabCounter + "'>x</button></p></div>");
-    }
-
-    //for All tab
-    $("#tab1 ." + tabCounter + ".todo").append("<br /><hr />");
-
-    tabCounter += 1;
+    
   });
   setUpClickHandler($(".tabcontainer .tab"));
   

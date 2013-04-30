@@ -2,11 +2,11 @@ var Todo = require("../models/todo.js"),
     TodoController = {};
 
 TodoController.list = function (req, res) {
-  Todo.find({}, function (err, people) {
+  Todo.find({}, function (err, todos) {
 	  if (err !== null) {
 	    console.log(err);
 	  } else {
-	    res.json(people);
+	    res.json(todos);
 	  }
   });
 };
@@ -14,7 +14,7 @@ TodoController.list = function (req, res) {
 TodoController.create = function (req, res) {
   var t = new Todo({
 	  "item":req.body.item,
-	  "tags":req.body.tags
+	  "categories":req.body.categories
   });
 
   t.save(function (err, result) {

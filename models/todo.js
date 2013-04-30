@@ -6,7 +6,7 @@ mongoose.connect("mongodb://localhost/development");
 
 TodoSchema = new mongoose.Schema({
   "item": String,
-  "tags" : String
+  "categories" : []
 });
 
 Todo = mongoose.model("Todo", TodoSchema);
@@ -16,10 +16,9 @@ Todo.findOne({}, function (err, result) {
 	  console.log(err);
   } else if (result === null) {
 	  var t = new Todo({
-	    "item": "Campaign",
-	    "tags": "personal, dnd"
+	    "item": "Buy Coffee",
+	    "categories": ["personal", "shopping"]
 	  });
-
   	t.save(function (err) {
 	    if (err !== null) {
 	    	console.log(err);

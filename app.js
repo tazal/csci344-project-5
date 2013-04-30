@@ -19,6 +19,6 @@ http.createServer(app).listen(3000, function () {
     console.log("Server running on port 3000");
 });
 
-app.get("/todolist.json", tc.list);
+app.get("/tlist.json", tc.list);
 app.post("/todos/new", tc.create);
 app.post("/todos/delete", tc.destroy);

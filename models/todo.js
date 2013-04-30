@@ -15,18 +15,19 @@ Todo = mongoose.model("Todo", TodoSchema);
 Todo.collection.drop();
 
 Todo.findOne({}, function (err, result) {
+  "use strict";
   if (err !== null) {
-	  console.log(err);
+    console.log(err);
   } else if (result === null) {
-	  var t = new Todo({
-	    "item": "Buy Coffee",
-	    "categories": ["groceries", "shopping"]
-	  });
-  	t.save(function (err) {
-	    if (err !== null) {
-	    	console.log(err);
-	    }
-	  });
+    var t = new Todo({
+      "item": "Buy Coffee",
+      "categories": ["groceries", "shopping"]
+    });
+    t.save(function (err) {
+      if (err !== null) {
+        console.log(err);
+      }
+    });
   }
 });
 

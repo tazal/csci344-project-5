@@ -60,7 +60,7 @@ var main = function () {
     $("." + toNuke).fadeOut(1000, function () {
       $("." + toNuke).remove();
     });
-    
+
     $.getJSON("tlist.json", function (todos) {
       todos.forEach(function (todo) {
         if (todo._id.toString() === toNuke.toString()) {
@@ -77,25 +77,25 @@ var main = function () {
   $("body").on("click", "#submit", function () {
     $("#added").fadeOut(200);
     $("#added").fadeIn(1000);
-    
+
 
     var tagArray = $("#addTags").val().split(","),
       toDoItem = $("#addToDo").val(),
       post_object = {},
       tCount,
       isUnique;
-      
+
     if (toDoItem === "") {
       alert("Please give your item a name.");
     } else {
       post_object.item = toDoItem;
       post_object.categories = tagArray;
-      
+
       $.post("/todos/new", post_object, function (response) {
         $("#addToDo").val("task goes here");
         $("#addTags").val("tags go here");
         ids.push(response._id);
-        
+
         $("#tab1").append("<div class='todo " + ids[tabCounter] + "'></div>");
         $("#tab1 ." + ids[tabCounter] + ".todo").append("<h3>" + toDoItem + " <button class='destroy " + ids[tabCounter] + "'>x</button></h3>" + "<h4>tagged: </h4>");
         //for All tab
@@ -130,9 +130,8 @@ var main = function () {
       });
     }
 
-    
   });
   setUpClickHandler($(".tabcontainer .tab"));
-  
+
 };
 $(document).ready(main);

@@ -1,0 +1,97 @@
+@import url(http://fonts.googleapis.com/css?family=Merriweather+Sans);
+@import url(http://fonts.googleapis.com/css?family=Inder);
+
+body {
+  font-family: "Merriweather Sans", sans-serif;
+  background: #000;
+  text-align: center;
+}
+
+h1{
+  font-size: 2.4em;
+  margin: 0px;
+  color: #BDF;
+  padding: 20px;
+}
+
+h4 {
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1.5em;
+  padding: 5px;
+}
+
+p {
+  font-size: 1em;
+}
+
+h1, h3, h4 {
+  font-family: "Inder", sans-serif;
+}
+
+hr {
+  border-color: #000;
+}
+
+.tabcontainer a {
+  text-decoration: none;
+  color: #000000;
+  font-size: 1.25em;
+  opacity: 1;
+}
+
+.tabcontainer {
+  margin-top: 20px;
+}
+
+#tab1header {
+  background: #BDF;
+  padding: 7px;
+}
+
+#tab2header {
+  background: #DBF;
+  padding: 7px;
+}
+
+#tab3header {
+  background: #FBD;
+  padding: 7px;
+}
+
+.content .tab {
+  display: none; 
+}
+
+.content {
+  padding: 0px;
+  width: 500px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 50px;
+}
+
+#added {
+  display: none;
+}
+
+#tab1 {
+  background: #BDF;
+  margin: 7px;
+  padding: 1px;
+}
+
+#tab2 {
+  background:#DBF;
+  margin: 7px;
+  padding: 1px;
+}
+
+#tab3 {
+  background: #FBD;
+  height: 170px;
+  margin: 7px;
+  padding: 1px;
+}

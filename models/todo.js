@@ -11,6 +11,9 @@ TodoSchema = new mongoose.Schema({
 
 Todo = mongoose.model("Todo", TodoSchema);
 
+//for debugging purposes
+//Todo.collection.drop();
+
 Todo.findOne({}, function (err, result) {
   if (err !== null) {
 	  console.log(err);

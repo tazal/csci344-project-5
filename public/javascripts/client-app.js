@@ -28,7 +28,6 @@ var main = function () {
       });
       ids.push(todo._id);
     });
-    console.log(ids);
 
     //http://stackoverflow.com/questions/5381621/jquery-function-to-get-all-unique-elements-from-an-array
     unique = stack.filter(function (itm, i, a) {
@@ -46,7 +45,7 @@ var main = function () {
         //for All tab
         $("#tab1 ." + ids[tabCounter] + ".todo").append("<p>" + category + "</p>");
         //for Categories tab
-        $("#tab2 #" + category + " br").before("<div class='" + ids[tabCounter] + "'><p>" + todo.item + " <button class='destroy " + ids[tabCounter] + "'>x</button></p></div>");
+        $("#tab2 #" + category.split(" ").join("") + " br").before("<div class='" + ids[tabCounter] + "'><p>" + todo.item + " <button class='destroy " + ids[tabCounter] + "'>x</button></p></div>");
       });
       //for All tab
       $("#tab1 ." + ids[tabCounter] + ".todo").append("<br /><hr />");
@@ -54,21 +53,22 @@ var main = function () {
     });
   });
 
+
   //for both tabs
   $("body").on("click", ".destroy", function () {
-    console.log($(this).parent());
     var toNuke = $(this).attr("class").split(" ").slice(-1);
     $("." + toNuke).fadeOut(1000, function () {
       $("." + toNuke).remove();
     });
     
-    //removes the item from json file
-    /*var nuke_object = 
-    $.post("/todos/delete", nuke_object, function (response) {
-    });*/
+    $.getJSON("tlist.json", function (todos) {
+      todos.forEach(function (todo) {
+        if (todo._id.toString() === toNuke.toString()) {
+          $.post("/todos/delete", todo);
+        }
+      });
+    });
   });
-  
-  
 
   //Add tab
   $("#addToDo").val("task goes here");
@@ -117,6 +117,7 @@ var main = function () {
           if (isUnique === true) {
             unique.push(tagArray[tCount]);
             $("#tab2").append("<div id ='" + tagArray[tCount].split(" ").join("") + "'><h3>" + tagArray[tCount] + "</h3><br /><hr /></div>");
+            console.log(tagArray[tCount]);
           }
 
           $("#tab2 #" + tagArray[tCount].split(" ").join("") + " br").before("<div class='" + ids[tabCounter] + "'><p>" + toDoItem + " <button class='destroy " + ids[tabCounter] + "'>x</button></p></div>");

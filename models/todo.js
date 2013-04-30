@@ -12,7 +12,7 @@ TodoSchema = new mongoose.Schema({
 Todo = mongoose.model("Todo", TodoSchema);
 
 //for debugging purposes
-//Todo.collection.drop();
+Todo.collection.drop();
 
 Todo.findOne({}, function (err, result) {
   if (err !== null) {
@@ -20,7 +20,7 @@ Todo.findOne({}, function (err, result) {
   } else if (result === null) {
 	  var t = new Todo({
 	    "item": "Buy Coffee",
-	    "categories": ["personal", "shopping"]
+	    "categories": ["groceries", "shopping"]
 	  });
   	t.save(function (err) {
 	    if (err !== null) {
